@@ -594,8 +594,7 @@ class Creature:
                                 self.ability_names}  # default for no given ability score is 10 (bonus = 0) as per manual.
         self.abilities = {n: 10 for n in self.ability_names}
         for ability in self.settings['abilities']:  # a dictionary within a dictionary
-            if ability in self.settings['ability_bonuses']:
-                if 10 + self.settings['ability_bonuses'][ability] * 2 != self.settings['abilities'][ability] and 10 + \
+         if 10 + self.settings['ability_bonuses'][ability] * 2 != self.settings['abilities'][ability] and 10 + \
                         self.settings['ability_bonuses'][ability] * 2 + 1 != self.settings['abilities'][ability]:
                     warnings.warn('Mismatch: both ability score and bonus provided, ' \
                                   'but they differ ({0}: 10+{1}*2 vs. {2})'.format(ability,
@@ -604,7 +603,7 @@ class Creature:
                                                                                    self.settings['abilities'][ability]))
             self.abilities[ability] = int(self.settings['abilities'][ability])
             self.ability_bonuses[ability] = math.floor(int(self.settings['abilities'][ability]) / 2 - 5)
-        for ability in self.settings['ability_bonuses']:
+	for ability in self.settings['ability_bonuses']:
             self.ability_bonuses[ability] = self.settings['ability_bonuses'][ability]
             self.abilities[ability] = 10 + 2 * self.ability_bonuses[
                 ability]  # I know it means nothing, but I am unsure why this was absent.

@@ -1,5 +1,5 @@
 import random, DnD, types
-
+import itertools
 
 class combat_stats:
 
@@ -13,8 +13,8 @@ class combat_stats:
 
 		friendList = []
 		enemyList = []
-		count = 0		
-
+		cur_count = 0		
+		best_count = 0
 		
 		for i in range(enemies):
 			Type = str(input("Type of enemies: "))				
@@ -29,14 +29,16 @@ class combat_stats:
 			Friendly= DnD.Creature(friendList[q])
 			Enemy = DnD.Creature(enemyList[q])
 			rate=DnD.Encounter(Friendly,Enemy).predict()
-#			print(rate[1])  
-#			print(rate[3])
-#			print(rate)
 			if(rate[1] > rate[3]):
-				count += 1
-				print("Count")
-				print(count)			
-		
+				cur_count =+1
+		print('Anticipated wins based on current orientation:', cur_count) 	
 			
-			
-	
+												
+		for r in itertools.product(friendList, enemyList):
+			Friendly= DnD.Creature(r[0])
+			Enemy = DnD.Creature(r[1])
+			rate=DnD.Encounter(Friendly,Enemy).predict()
+			if(rate[1] > rate[3]):
+				best_count += 1
+                                
+		print('Possible amount of favoriable encounters:', best_count)												
