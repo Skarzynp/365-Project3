@@ -74,29 +74,36 @@ class combat_stats:
 				friendList.insert(j,Type)
 
 		#Determine and display success rates in single simulated encounters
-		for q in range(len(enemyList)):
-			#Calculations to determine rate
-			Friendly= DnD.Creature(friendList[q]) #FIXME lists must be the same length or else this may fail!
-			Enemy = DnD.Creature(enemyList[q])
-			rate=DnD.Encounter(Friendly,Enemy).predict()
-			if (rate[1] > rate[3]):
-				count += 1
 
-		for r in itertools.product(friendList, enemyList):
-			Friendly = DnD.Creature(r[0])
-			Enemy = DnD.Creature(r[1])
-			rate = DnD.Encounter(Friendly, Enemy).predict()
-			if (rate[1] > rate[3]):
-				best_count += 1
+		if(enemyList == friendList):
 
-		#Display success rates
-		print(f"\nEnemy Alignment: {rate[0]}")
-		print(f"Expected Enemy Success Rate: {rate[1]}")
-		print(f"Ally Alignment: {rate[2]}")
-		print(f"Expected Ally Success Rate: {rate[3]}")
-		print(rate)
-		print(f"\nAnticipated wins based on current orientation: {count}\n")
-		print(f"\nPossible amount of favoriable encounters: {best_count}\n")
+			for q in range(len(enemyList)):
+				#Calculations to determine rate
+									
+
+				Friendly= DnD.Creature(friendList[q])
+				Enemy = DnD.Creature(enemyList[q])
+				rate=DnD.Encounter(Friendly,Enemy).predict()
+				if (rate[1] > rate[3]):
+					count += 1
+
+			for r in itertools.product(friendList, enemyList):
+				Friendly = DnD.Creature(r[0])
+				Enemy = DnD.Creature(r[1])
+				rate = DnD.Encounter(Friendly, Enemy).predict()
+				if (rate[1] > rate[3]):
+					best_count += 1
+
+			#Display success rates
+			print(f"\nEnemy Alignment: {rate[0]}")
+			print(f"Expected Enemy Success Rate: {rate[1]}")
+			print(f"Ally Alignment: {rate[2]}")
+			print(f"Expected Ally Success Rate: {rate[3]}")
+			print(rate)
+			print(f"\nAnticipated wins based on current orientation: {count}\n")
+			print(f"\nPossible amount of favoriable encounters: {best_count}\n")
+		else:
+			print("Cant Simulate Odd Number of Enemies and Friendlies")
 
 	def getUserInput(self):
 		print(self.AgroLvl)
