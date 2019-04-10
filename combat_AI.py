@@ -1,20 +1,24 @@
 import random, DnD, types
-
+import itertools
 
 class combat_stats:
 
+	# instance variables
+	AgroLvl = []
+	distClass = []
+
 	def __init__(self):
-		print("in init")
+		print("----------------------------------")
 
 		# better if static?
-		AgroLvl = {
+		self.AgroLvl = {
 			0: "Timid",
 			1: "Passive",
 			2: "Neutral",
 			3: "Agressive",
 			4: "Fanatical"
 		}
-		distClass = {
+		self.distClass = {
 			0: "Adjacent",
 			1: "Close",
 			2: "Medium",
@@ -22,17 +26,18 @@ class combat_stats:
 			4: "Out of Range"
 		}
 		# associated with ArgoLvl dictionary
-		agroCount = 0;
+		self.agroCount = 0;
 		# associated with distClass dictionary
-		distance = 2;
+		self.distance = 2;
 		#Does the AI have the suprise round?
-		surprise = False;
+		self.surprise = False;
 
 	def getOdds(self):
 
 		friendList = []
 		enemyList = []
 		count = 0
+		best_count = 0
 
 		use_list = str(input("Use default lists? (y/n)"));
 		# If default list selected, preload list
@@ -41,7 +46,7 @@ class combat_stats:
 
 			#enemyList = [bandit, bandit, bandit]
 			#friendList = [archmage, archmage, archmage]
-			for i in range(3):
+			for i in range(4):
 				enemyList.insert(i, "bandit")
 				friendList.insert(i, "archmage")
 
@@ -77,27 +82,36 @@ class combat_stats:
 			if (rate[1] > rate[3]):
 				count += 1
 
-			#Display success rates
-			print(f"\nEnemy Alignment: {rate[0]}")
-			print(f"Expected Enemy Success Rate: {rate[1]}")
-			print(f"Ally Alignment: {rate[2]}")
-			print(f"Expected Ally Success Rate: {rate[3]}")
-			print(rate)
-			print(f"\nSimulated Victory Count: {count}")
+		for r in itertools.product(friendList, enemyList):
+			Friendly = DnD.Creature(r[0])
+			Enemy = DnD.Creature(r[1])
+			rate = DnD.Encounter(Friendly, Enemy).predict()
+			if (rate[1] > rate[3]):
+				best_count += 1
+
+		#Display success rates
+		print(f"\nEnemy Alignment: {rate[0]}")
+		print(f"Expected Enemy Success Rate: {rate[1]}")
+		print(f"Ally Alignment: {rate[2]}")
+		print(f"Expected Ally Success Rate: {rate[3]}")
+		print(rate)
+		print(f"\nAnticipated wins based on current orientation: {count}\n")
+		print(f"\nPossible amount of favoriable encounters: {best_count}\n")
 
 	def getUserInput(self):
 		print(self.AgroLvl)
-		agroCount = str(input("Enter aggression level of AI: \n (from 0 to 4, 0 is low) \n"))
-		print(agroCount + self.AgroLvl[agroCount])
+		agroCount = int(input("Enter aggression level of AI: \n (from 0 to 4, 0 is low) "))
+		print(f"\n{agroCount} {self.AgroLvl[agroCount]}\n")
 		self.agroCount = agroCount
 
 		# error checking
-		print(self.agroCount)
+		#print(self.agroCount)
 
 		print(self.distClass)
-		distance = str(input("Enter intitial distance of enemy: \n (from 0 to 4, 0 is low) \n"))
-		print(distance + self.distClass[distance])
+		distance = int(input("Enter intitial distance of enemy: \n (from 0 to 4, 0 is low) "))
+		print(f"\n{distance} {self.distClass[distance]}\n")
 		self.distance = distance
 
 		# error checking
-		print(self.distance)
+		#print(self.distance)
+	
