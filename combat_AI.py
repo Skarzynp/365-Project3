@@ -7,6 +7,7 @@ class combat_stats:
 	AgroLvl = []
 	distClass = []
 
+	#initalizes the type of combat strategy
 	def __init__(self):
 		print("----------------------------------")
 
@@ -32,6 +33,7 @@ class combat_stats:
 		#Does the AI have the suprise round?
 		self.surprise = False;
 
+	#Generates the odds of winning encounters against the enemy
 	def getOdds(self):
 
 		friendList = []
@@ -76,16 +78,21 @@ class combat_stats:
 		#Determine and display success rates in single simulated encounters
 
 		if(enemyList == friendList):
-
+			
+			#Loop Checks Encounters based on input 
 			for q in range(len(enemyList)):
 				#Calculations to determine rate
 									
 
 				Friendly= DnD.Creature(friendList[q])
 				Enemy = DnD.Creature(enemyList[q])
+				#Predictor library found in DnD Battler
 				rate=DnD.Encounter(Friendly,Enemy).predict()
 				if (rate[1] > rate[3]):
 					count += 1
+
+			#Loop checks all possible encounters and displays the total encounters that 
+			#can result in a win
 
 			for r in itertools.product(friendList, enemyList):
 				Friendly = DnD.Creature(r[0])
@@ -105,6 +112,8 @@ class combat_stats:
 		else:
 			print("Cant Simulate Odd Number of Enemies and Friendlies")
 
+
+	#Gets user input 
 	def getUserInput(self):
 		print(self.AgroLvl)
 		agroCount = int(input("Enter aggression level of AI: \n (from 0 to 4, 0 is low) "))
@@ -121,4 +130,8 @@ class combat_stats:
 
 		# error checking
 		#print(self.distance)
+
+
 	
+
+		
