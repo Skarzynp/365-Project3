@@ -9,4 +9,3 @@ c = combat_stats()
 c.getOdds()
 c.getUserInput()
 
-
